@@ -1,21 +1,36 @@
-import { useEffect, useState, type ReactNode, isValidElement, cloneElement } from "react";
+import { useEffect, useState, type ReactNode, isValidElement, cloneElement, useMemo, Children } from "react";
 import "./Column.css";
 import { motion } from "motion/react";
-import icon from "../../assets/svg/buildings-home-house-svgrepo-com.svg";
 
 type ColumnProps = {
   children: ReactNode;
   index: number;
   selected?: boolean;
-  setIndex: (newIndex: number) => void;
+  icon?: string;
+  setIndex: (newIndex: number[]) => void;
 };
 
-export function Column({ children, index, selected = false }: ColumnProps) {
+export function Column({ icon, children, index, selected = false, setIndex }: ColumnProps) {
   const jumpHeight = 128;
-  const items = Array.isArray(children) ? children : [children];
+  const items = useMemo(() => Children.toArray(children).filter(Boolean), [children]);
   const [positions, setPositions] = useState<number[]>([]);
 
+
+
   useEffect(() => {
+
+    if (selected) {
+
+      if (items.length === 0) {
+        if (index !== 0) setIndex(Array(6).fill(0));
+      } else if (index >= items.length) {
+
+        setIndex(Array(6).fill(0));
+      } else if (index < 0) {
+        setIndex(Array(6).fill(items.length - 1));
+      }
+    }
+
     const newPositions = items.map((_, i) => {
       let pos = i - index;
 
@@ -27,7 +42,10 @@ export function Column({ children, index, selected = false }: ColumnProps) {
     });
 
     setPositions(newPositions);
-  }, [index, items.length]);
+
+  }, [index, items, selected, setIndex]);
+
+
 
   return (
     <div>

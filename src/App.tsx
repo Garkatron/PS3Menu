@@ -3,15 +3,13 @@ import './App.css'
 import { Row } from './components/Row/Row'
 import { Column } from './components/Column/Column'
 import { Cell } from './components/Cell/Cell'
+import { ICON_ART, ICON_ASTRO, ICON_BUILDING, ICON_BUSINESS, ICON_EMAIl, ICON_FACEBOOK, ICON_GEAR_SETTING, ICON_HOUSE, ICON_INSTAGRAM, ICON_JAVA, ICON_JOYSTICK, ICON_JS, ICON_KOTLIN, ICON_LINK, ICON_LINKEDIN, ICON_LINUX, ICON_LOGO_TS, ICON_MONGODB, ICON_PHOTO, ICON_PORTFOLIO, ICON_PROGRAMMING, ICON_REACT, ICON_RUST, ICON_SQL, ICON_TOOLBOX, ICON_TOOLS, ICON_TOP, ICON_TRANSLATE, ICON_USER_AVATAR_PROFILE, ICON_YOUTUBE } from "./icons";
+import BG_VIDEO from './assets/BG_BLUE.mp4';
 
-import GearSetting from './assets/svg/gear-setting-settings-svgrepo-com.svg';
-import PhotoSvgRepo from './assets/svg/photo-svgrepo-com.svg';
-import UserAvatarProfil from './assets/svg/user-avatar-profile-svgrepo-com.svg';
-import bgVideo from './assets/BG_BLUE.mp4';
+
+import { SND_CURSOR } from './sounds'
 function App() {
   const [currentCol, setCurrentCol] = useState(0);
-  const [currentRow, setCurrentRow] = useState(0);
-
   const [rowPositions, setRowPositions] = useState<number[]>(Array(6).fill(0));
 
   const go = (movement: "UP" | "DOWN") => {
@@ -23,10 +21,12 @@ function App() {
   };
 
   useEffect(() => {
+    SND_CURSOR.currentTime = 0;
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
         case "ArrowUp":
           go("UP");
+
           break;
         case "ArrowDown":
           go("DOWN");
@@ -38,6 +38,7 @@ function App() {
           setCurrentCol(prev => prev + 1);
           break;
       }
+      SND_CURSOR.play();
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -48,49 +49,56 @@ function App() {
 
   return (
     <main>
-      <div className="center-line"></div>
+      {/** <div className="center-line"></div> */}
       <video autoPlay muted loop>
-        <source src={bgVideo} type="video/mp4" />
+        <source src={BG_VIDEO} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
       <Row index={currentCol} setIndex={setCurrentCol}>
-        <Column index={currentCol === 0 ? rowPositions[0] : 0} selected={currentCol === 0} setIndex={setCurrentRow}>
-          <Cell icon={UserAvatarProfil} />
-          <Cell icon={UserAvatarProfil} />
-          <Cell icon={UserAvatarProfil} />
-          <Cell icon={UserAvatarProfil} />
-          <Cell icon={UserAvatarProfil} />
-
-        </Column>
-        <Column index={currentCol === 1 ? rowPositions[1] : 0} selected={currentCol === 1} setIndex={setCurrentRow}>
-          <Cell icon={PhotoSvgRepo} />
-          <Cell icon={PhotoSvgRepo} />
-          <Cell icon={PhotoSvgRepo} />
-          <Cell icon={PhotoSvgRepo} />
-
-        </Column>
-        <Column index={currentCol === 2 ? rowPositions[2] : 0} selected={currentCol === 2} setIndex={setCurrentRow}>
-
-          <Cell icon={GearSetting} />
-
-        </Column>
-        <Column index={currentCol === 3 ? rowPositions[3] : 0} selected={currentCol === 3} setIndex={setCurrentRow}>
-
-          <Cell icon={UserAvatarProfil} />
+        <Column icon={ICON_HOUSE} index={currentCol === 0 ? rowPositions[0] : 0} selected={currentCol === 0} setIndex={setRowPositions}>
+          <Cell icon={ICON_USER_AVATAR_PROFILE} />
+          <Cell icon={ICON_PORTFOLIO} />
 
 
         </Column>
-        <Column index={currentCol === 4 ? rowPositions[4] : 0} selected={currentCol === 4} setIndex={setCurrentRow}>
+        <Column icon={ICON_LINK} index={currentCol === 1 ? rowPositions[1] : 0} selected={currentCol === 1} setIndex={setRowPositions}>
+          <Cell icon={ICON_EMAIl} />
+          <Cell icon={ICON_LINKEDIN} />
+          <Cell icon={ICON_INSTAGRAM} />
+          <Cell icon={ICON_YOUTUBE} />
+          <Cell icon={ICON_FACEBOOK} />
 
-          <Cell icon={UserAvatarProfil} />
 
 
         </Column>
-        <Column index={currentCol === 5 ? rowPositions[5] : 0} selected={currentCol === 5} setIndex={setCurrentRow}>
-          <Cell icon={UserAvatarProfil} />
+        <Column icon={ICON_PORTFOLIO} index={currentCol === 2 ? rowPositions[2] : 0} selected={currentCol === 2} setIndex={setRowPositions}>
 
 
+        </Column>
+        <Column icon={ICON_BUSINESS} index={currentCol === 3 ? rowPositions[3] : 0} selected={currentCol === 3} setIndex={setRowPositions}>
+
+
+
+        </Column>
+        <Column icon={ICON_GEAR_SETTING} index={currentCol === 4 ? rowPositions[4] : 0} selected={currentCol === 4} setIndex={setRowPositions}>
+
+          <Cell icon={ICON_TRANSLATE} />
+
+        </Column>
+        <Column icon={ICON_PROGRAMMING} index={currentCol === 5 ? rowPositions[5] : 0} selected={currentCol === 5} setIndex={setRowPositions}>
+          <Cell icon={ICON_JAVA} />
+          <Cell icon={ICON_JS} />
+          <Cell icon={ICON_SQL} />
+          <Cell icon={ICON_KOTLIN} />
+          <Cell icon={ICON_LOGO_TS} />
+          <Cell icon={ICON_RUST} />
+        </Column>
+        <Column icon={ICON_TOOLBOX} index={currentCol === 6 ? rowPositions[6] : 0} selected={currentCol === 6} setIndex={setRowPositions}>
+          <Cell icon={ICON_ASTRO} />
+          <Cell icon={ICON_REACT} />
+          <Cell icon={ICON_MONGODB} />
+          <Cell icon={ICON_LINUX} />
 
         </Column>
       </Row>
