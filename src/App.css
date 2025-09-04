@@ -25,14 +25,7 @@ main {
     min-height: 100vh;
 }
 
-.buttons {
-    background-color: red;
-    width: 200px;
-    height: 200px;
-    position: absolute;
-    top: 0;
-    right: 0;
-}
+
 
 .logo-svg {
     width: 128px;
