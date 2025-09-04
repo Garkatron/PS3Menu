@@ -15,31 +15,17 @@ import { SND_CURSOR } from "./sounds";
 
 function App() {
   const [currentCol, setCurrentCol] = useState(0);
-  const [rowPositions, setRowPositions] = useState<number[]>(Array(7).fill(0));
   const colRef = useRef(currentCol);
 
   useEffect(() => {
     colRef.current = currentCol;
   }, [currentCol]);
 
-  const go = (movement: "UP" | "DOWN") => {
-    setRowPositions(prev => {
-      const newPositions = [...prev];
-      const col = colRef.current;
-      newPositions[col] = (newPositions[col] ?? 0) + (movement === "DOWN" ? 1 : -1);
-      return newPositions;
-    });
-  };
+
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
-        case "ArrowUp":
-          go("UP");
-          break;
-        case "ArrowDown":
-          go("DOWN");
-          break;
         case "ArrowLeft":
           setCurrentCol(prev => Math.max(0, prev - 1));
           break;
@@ -68,23 +54,23 @@ function App() {
       </video>
 
       <Row index={currentCol} setIndex={setCurrentCol}>
-        <Column icon={ICON_HOUSE} index={currentCol === 0 ? rowPositions[0] : 0} selected={currentCol === 0} setIndex={setRowPositions}>
+        <Column icon={ICON_HOUSE} selected={currentCol === 0} >
           <Cell icon={ICON_USER_AVATAR_PROFILE} />
           <Cell icon={ICON_PORTFOLIO} />
         </Column>
-        <Column icon={ICON_LINK} index={currentCol === 1 ? rowPositions[1] : 0} selected={currentCol === 1} setIndex={setRowPositions}>
+        <Column icon={ICON_LINK} selected={currentCol === 1}>
           <Cell icon={ICON_EMAIl} />
           <Cell icon={ICON_LINKEDIN} />
           <Cell icon={ICON_INSTAGRAM} />
           <Cell icon={ICON_YOUTUBE} />
           <Cell icon={ICON_FACEBOOK} />
         </Column>
-        <Column icon={ICON_PORTFOLIO} index={currentCol === 2 ? rowPositions[2] : 0} selected={currentCol === 2} setIndex={setRowPositions}></Column>
-        <Column icon={ICON_BUSINESS} index={currentCol === 3 ? rowPositions[3] : 0} selected={currentCol === 3} setIndex={setRowPositions}></Column>
-        <Column icon={ICON_GEAR_SETTING} index={currentCol === 4 ? rowPositions[4] : 0} selected={currentCol === 4} setIndex={setRowPositions}>
+        <Column icon={ICON_PORTFOLIO} selected={currentCol === 2}></Column>
+        <Column icon={ICON_BUSINESS} selected={currentCol === 3}></Column>
+        <Column icon={ICON_GEAR_SETTING} selected={currentCol === 4}>
           <Cell icon={ICON_TRANSLATE} />
         </Column>
-        <Column icon={ICON_PROGRAMMING} index={currentCol === 5 ? rowPositions[5] : 0} selected={currentCol === 5} setIndex={setRowPositions}>
+        <Column icon={ICON_PROGRAMMING} selected={currentCol === 5}>
           <Cell icon={ICON_JAVA} />
           <Cell icon={ICON_JS} />
           <Cell icon={ICON_SQL} />
@@ -92,7 +78,7 @@ function App() {
           <Cell icon={ICON_LOGO_TS} />
           <Cell icon={ICON_RUST} />
         </Column>
-        <Column icon={ICON_TOOLBOX} index={currentCol === 6 ? rowPositions[6] : 0} selected={currentCol === 6} setIndex={setRowPositions}>
+        <Column icon={ICON_TOOLBOX} selected={currentCol === 6} >
           <Cell icon={ICON_ASTRO} />
           <Cell icon={ICON_REACT} />
           <Cell icon={ICON_MONGODB} />

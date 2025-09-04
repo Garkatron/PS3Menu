@@ -4,35 +4,42 @@ import { motion } from "motion/react";
 
 type ColumnProps = {
   children: ReactNode;
-  index: number;
   selected?: boolean;
   icon?: string;
-  setIndex: (newIndex: number[]) => void;
 };
 
-export function Column({ icon, children, index, selected = false, setIndex }: ColumnProps) {
+export function Column({ icon, children, selected = false }: ColumnProps) {
   const jumpHeight = 128;
   const items = useMemo(() => Children.toArray(children).filter(Boolean), [children]);
-  const [positions, setPositions] = useState<number[]>([]);
 
+  const [positions, setPositions] = useState<number[]>([]);
+  const [currentRow, setCurrentRow] = useState(0);
 
 
   useEffect(() => {
-
     if (selected) {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "ArrowUp") setCurrentRow(prev => prev - 1);
+        if (e.key === "ArrowDown") setCurrentRow(prev => prev + 1);
+      };
 
       if (items.length === 0) {
-        if (index !== 0) setIndex(Array(6).fill(0));
-      } else if (index >= items.length) {
+        if (currentRow !== 0) setCurrentRow(0);
+      } else if (currentRow >= items.length) {
 
-        setIndex(Array(6).fill(0));
-      } else if (index < 0) {
-        setIndex(Array(6).fill(items.length - 1));
+        setCurrentRow(0);
+      } else if (currentRow < 0) {
+        setCurrentRow(items.length - 1);
       }
-    }
 
+      window.addEventListener("keydown", handleKeyDown);
+      return () => window.removeEventListener("keydown", handleKeyDown);
+    }
+  }, [currentRow, selected]);
+
+  useEffect(() => {
     const newPositions = items.map((_, i) => {
-      let pos = i - index;
+      let pos = i - currentRow;
 
       if (pos >= 0) {
         return pos;
@@ -43,7 +50,7 @@ export function Column({ icon, children, index, selected = false, setIndex }: Co
 
     setPositions(newPositions);
 
-  }, [index, items, selected, setIndex]);
+  }, [currentRow, items, setPositions]);
 
 
 
@@ -57,7 +64,7 @@ export function Column({ icon, children, index, selected = false, setIndex }: Co
       <div className="column" style={{ position: "relative", opacity: selected ? 1 : 0.2 }}>
         {items.map((child, i) => {
           const childWithProps = isValidElement(child)
-            ? cloneElement(child, { selected: i === index, active: selected })
+            ? cloneElement(child, { selected: i === currentRow, active: selected })
             : child;
 
           return (
