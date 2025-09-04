@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode, isValidElement, cloneElement, useMemo, Children } from "react";
 import "./Column.css";
 import { motion } from "motion/react";
+import { useIsMobile } from "../../utils";
 
 type ColumnProps = {
   children: ReactNode;
@@ -14,19 +15,30 @@ export function Column({ icon, children, selected = false }: ColumnProps) {
 
   const [positions, setPositions] = useState<number[]>([]);
   const [currentRow, setCurrentRow] = useState(0);
+  const isMobile = useIsMobile();
 
+  const variants = {
+    mobile: (pos: number) => ({
+      x: pos * jumpHeight,
+    }),
+    desktop: (pos: number) => ({
+      y: pos * jumpHeight,
+    }),
+  };
 
   useEffect(() => {
     if (selected) {
+      const prevRowKey = isMobile ? "ArrowLeft" : "ArrowUp";
+      const nextRowKey = isMobile ? "ArrowRight" : "ArrowDown";
+
       const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "ArrowUp") setCurrentRow(prev => prev - 1);
-        if (e.key === "ArrowDown") setCurrentRow(prev => prev + 1);
+        if (e.key === prevRowKey) setCurrentRow(prev => prev - 1);
+        if (e.key === nextRowKey) setCurrentRow(prev => prev + 1);
       };
 
       if (items.length === 0) {
         if (currentRow !== 0) setCurrentRow(0);
       } else if (currentRow >= items.length) {
-
         setCurrentRow(0);
       } else if (currentRow < 0) {
         setCurrentRow(items.length - 1);
@@ -35,16 +47,22 @@ export function Column({ icon, children, selected = false }: ColumnProps) {
       window.addEventListener("keydown", handleKeyDown);
       return () => window.removeEventListener("keydown", handleKeyDown);
     }
-  }, [currentRow, selected]);
+  }, [currentRow, selected, isMobile, items.length]);
 
   useEffect(() => {
     const newPositions = items.map((_, i) => {
       let pos = i - currentRow;
 
       if (pos >= 0) {
-        return pos;
+        if (isMobile) {
+          return pos + 1;
+        } else { return pos }
       } else {
-        return pos - 1;
+        if (isMobile) {
+          return pos;
+        } else {
+          return pos - 1;
+        }
       }
     });
 
@@ -71,7 +89,9 @@ export function Column({ icon, children, selected = false }: ColumnProps) {
             <motion.div
               key={i}
               style={{ position: "absolute", top: 0, left: 0 }}
-              animate={{ y: positions[i] * jumpHeight }}
+              custom={positions[i]}
+              animate={isMobile ? "mobile" : "desktop"}
+              variants={variants}
               transition={{ type: "spring", duration: 0.4, ease: "easeOut" }}
             >
               {childWithProps}

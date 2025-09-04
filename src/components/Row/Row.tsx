@@ -1,6 +1,7 @@
-import { useState, type ReactNode, useEffect, useRef } from "react";
+import { type ReactNode } from "react";
 import { motion } from "motion/react";
 import "./Row.css";
+import { useIsMobile } from "../../utils";
 
 type RowProps = {
     children: ReactNode;
@@ -9,21 +10,29 @@ type RowProps = {
 };
 
 export function Row({ children, index, setIndex }: RowProps) {
-    const cellWidth = 128;
-    const step = cellWidth;
+    const cellSize = 128;
+    const isMobile = useIsMobile();
 
     const items = Array.isArray(children) ? children : [children];
 
     if (index >= items.length) setIndex(0);
     if (index < 0) setIndex(items.length - 1);
 
-    const targetX = -index * step;
+    const variants = {
+        mobile: {
+            y: -index * cellSize,
+        },
+        desktop: {
+            x: -index * cellSize,
+        },
+    };
 
     return (
         <motion.div
-            animate={{ x: targetX }}
+            className="row"
+            animate={isMobile ? "mobile" : "desktop"}
+            variants={variants}
             transition={{ type: "tween", duration: 0.4, ease: "easeOut" }}
-            className="row-container"
         >
             {children}
         </motion.div>

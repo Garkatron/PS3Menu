@@ -3,3 +3,9 @@
     flex-direction: column;
     position: relative;
 }
+
+@media only screen and (max-width: 900px) {
+    .column {
+        flex-direction: row;
+    }
+}

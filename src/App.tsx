@@ -12,10 +12,12 @@ import {
 } from "./icons";
 import BG_VIDEO from "./assets/BG_BLUE.mp4";
 import { SND_CURSOR } from "./sounds";
+import { useIsMobile } from "./utils";
 
 function App() {
   const [currentCol, setCurrentCol] = useState(0);
   const colRef = useRef(currentCol);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     colRef.current = currentCol;
@@ -24,14 +26,15 @@ function App() {
 
 
   useEffect(() => {
+    const prevColKey = isMobile ? "ArrowUp" : "ArrowLeft";
+    const nextColKey = isMobile ? "ArrowDown" : "ArrowRight";
+
     const handleKeyDown = (e: KeyboardEvent) => {
-      switch (e.key) {
-        case "ArrowLeft":
-          setCurrentCol(prev => Math.max(0, prev - 1));
-          break;
-        case "ArrowRight":
-          setCurrentCol(prev => Math.min(6, prev + 1));
-          break;
+      if (e.key === prevColKey) {
+        setCurrentCol(prev => Math.max(0, prev - 1));
+      }
+      if (e.key === nextColKey) {
+        setCurrentCol(prev => Math.min(6, prev + 1));
       }
 
       if (SND_CURSOR) {
@@ -44,7 +47,7 @@ function App() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <main>

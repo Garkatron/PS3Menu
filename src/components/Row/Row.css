@@ -1,4 +1,13 @@
-.row-container {
+.row {
     display: flex;
     height: 128px;
+    flex-direction: row;
+
+}
+
+@media only screen and (max-width: 900px) {
+    .row {
+        flex-direction: column;
+        height: auto;
+    }
 }

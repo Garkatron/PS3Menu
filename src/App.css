@@ -23,6 +23,8 @@ main {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+    overflow: hidden;
+
 }
 
 
@@ -31,6 +33,9 @@ main {
     width: 128px;
     height: 128px;
 }
+
+
+/*
 
 .center-line {
     position: fixed;
@@ -46,25 +51,21 @@ main {
     content: "";
     position: absolute;
     background: rgba(255, 0, 0, 0.5);
-    /* color rojo semi-transparente */
 }
 
-/* Línea horizontal */
 .center-line::before {
     top: 50%;
     left: 0;
     width: 100%;
     height: 1px;
-    /* grosor */
     transform: translateY(-0.5px);
 }
 
-/* Línea vertical */
 .center-line::after {
     left: 50%;
     top: 0;
     width: 1px;
-    /* grosor */
     height: 100%;
     transform: translateX(-0.5px);
 }
+*/
