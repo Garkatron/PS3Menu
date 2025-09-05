@@ -26,6 +26,27 @@ export function Column({ icon, children, selected = false }: ColumnProps) {
     }),
   };
 
+  const onSetCurrentRow = () => {
+    if (items.length === 0) {
+      if (currentRow !== 0) setCurrentRow(0);
+    } else if (currentRow >= items.length) {
+      setCurrentRow(0);
+    } else if (currentRow < 0) {
+      setCurrentRow(items.length - 1);
+    }
+  }
+
+  const onWheel = (e) => {
+
+    if (e.deltaY < 0) {
+      setCurrentRow(prev => prev - 1);
+    } else if (e.deltaY > 0) {
+      setCurrentRow(prev => prev + 1);
+    }
+    onSetCurrentRow();
+
+  }
+
   useEffect(() => {
     if (selected) {
       const prevRowKey = isMobile ? "ArrowLeft" : "ArrowUp";
@@ -36,13 +57,7 @@ export function Column({ icon, children, selected = false }: ColumnProps) {
         if (e.key === nextRowKey) setCurrentRow(prev => prev + 1);
       };
 
-      if (items.length === 0) {
-        if (currentRow !== 0) setCurrentRow(0);
-      } else if (currentRow >= items.length) {
-        setCurrentRow(0);
-      } else if (currentRow < 0) {
-        setCurrentRow(items.length - 1);
-      }
+      onSetCurrentRow();
 
       window.addEventListener("keydown", handleKeyDown);
       return () => window.removeEventListener("keydown", handleKeyDown);
@@ -73,13 +88,20 @@ export function Column({ icon, children, selected = false }: ColumnProps) {
 
 
   return (
-    <div>
-      <img
+    <motion.div className="column-container" >
+      <motion.img
+        animate={{ opacity: selected ? 1 : 0.2, y: isMobile ? 128 : 0 }}
+        transition={{ type: "spring", duration: 0.4, ease: "easeOut" }}
         src={icon}
         alt=""
-        style={{ width: "128px", filter: "invert()" }}
+        id="icon"
       />
-      <div className="column" style={{ position: "relative", opacity: selected ? 1 : 0.2 }}>
+
+      <div
+        className="column"
+        style={{ position: "relative", opacity: selected ? 1 : 0.0 }}
+        onWheel={onWheel}
+      >
         {items.map((child, i) => {
           const childWithProps = isValidElement(child)
             ? cloneElement(child, { selected: i === currentRow, active: selected })
@@ -93,12 +115,13 @@ export function Column({ icon, children, selected = false }: ColumnProps) {
               animate={isMobile ? "mobile" : "desktop"}
               variants={variants}
               transition={{ type: "spring", duration: 0.4, ease: "easeOut" }}
+
             >
               {childWithProps}
             </motion.div>
           );
         })}
       </div>
-    </div >
+    </motion.div >
   );
 }

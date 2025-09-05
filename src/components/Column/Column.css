@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    background-color: red;
 }
 
 @media only screen and (max-width: 900px) {
@@ -9,3 +10,11 @@
         flex-direction: row;
     }
 }
+
+#icon {
+    width: 128px;
+    filter: invert(100%);
+    pointer-events: none;
+}
+
+/* sepia(89%) saturate(5000%) hue-rotate(100deg)*/
