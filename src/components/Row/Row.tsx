@@ -22,7 +22,7 @@ export function Row({ children, index, setIndex }: RowProps) {
         if (e.deltaY < 0) {
             setIndex(prev => Math.max(0, prev - 1));
         } else if (e.deltaY > 0) {
-            setIndex(prev => Math.min(6, prev + 1));
+            setIndex(prev => Math.min(7, prev + 1));
         }
 
     }

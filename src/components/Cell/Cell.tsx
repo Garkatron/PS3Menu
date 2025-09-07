@@ -6,6 +6,7 @@ type CellProps = {
     icon: string;
     selected?: boolean;
     active?: boolean;
+    invert?: boolean;
     children?: ReactNode;
     onClick?: () => void;
 };
@@ -15,6 +16,7 @@ export function Cell({
     children,
     selected = false,
     active = false,
+    invert = true,
     onClick,
 }: CellProps) {
     const cellRef = useRef<HTMLDivElement>(null);
@@ -46,7 +48,7 @@ export function Cell({
             onClick={onClick}
             onKeyDown={handleKeyDown}
         >
-            <img src={icon} alt="" style={{ filter: "invert()" }} />
+            <img src={icon} alt="" style={invert ? { filter: "invert()" } : {}} />
             {
                 children && active && selected && (
                     <div className="content">

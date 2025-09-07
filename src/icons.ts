@@ -36,6 +36,12 @@ import ICON_PROGRAMMING from "./assets/svg/programming-svgrepo-com.svg";
 import ICON_JS from "./assets/svg/js-svgrepo-com.svg";
 import ICON_NODE from "./assets/svg/node-16-svgrepo-com.svg";
 import ICON_TOP from "./assets/svg/medal-ribbons-star-svgrepo-com.svg";
+import ICON_LEARN from "./assets/svg/learn-svgrepo-com.svg";
+import ICON_ESO from "./assets/svg/elementary-middle-and-high-school-4-svgrepo-com.svg";
+import ICON_WEB from "./assets/svg/web-svgrepo-com.svg";
+import ICON_TECHNICIAN from "./assets/svg/repair-svgrepo-com.svg";
+import ICON_SMALL_BUSINESS from "./assets/svg/business-city-metropolis-svgrepo-com.svg";
+import ICON_BIG_BUSINESS from "./assets/svg/business-building-svgrepo-com.svg";
 
 export {
     ICON_GEAR_SETTING,
@@ -74,5 +80,6 @@ export {
     ICON_PROGRAMMING,
     ICON_NODE,
     ICON_JS,
-    ICON_TOP
+    ICON_TOP,
+    ICON_LEARN, ICON_WEB, ICON_ESO, ICON_TECHNICIAN, ICON_BIG_BUSINESS, ICON_SMALL_BUSINESS
 }
